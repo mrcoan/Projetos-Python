@@ -47,6 +47,3 @@ Simula um carrinho de compras com produtos fixos:
 ## Autor
 **Marco Antonio Almeida**  
 [GitHub](https://github.com/mrcoan) | [LinkedIn](https://www.linkedin.com/in/mrcoan)
-
----
-
