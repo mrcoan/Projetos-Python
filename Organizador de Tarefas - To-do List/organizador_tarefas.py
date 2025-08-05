@@ -37,8 +37,8 @@ def concluir_tarefa():
 def tarefas_concluidas():
     if len(tarefas_finalizadas):
         print("\nTarefas concluídas: ")
-        for indice, tarefa in enumerate(tarefas_finalizadas, start=1):
-            print(f"Tarefa {indice}: {tarefa.capitalize()}.")
+        for tarefa in tarefas_finalizadas:
+            print(f"- {tarefa.capitalize()}.")
         
         print(f"{len(tarefas_finalizadas)} tarefa(s) concluída(s).")
     else:
