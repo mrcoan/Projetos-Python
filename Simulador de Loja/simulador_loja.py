@@ -1,29 +1,46 @@
 # Simulador de Loja --------------------------------------------------------
 
 estoque = {
-    "notebook": 3500.00,
-    "smartphone": 2400.00,
-    "fones de ouvido": 150.00,
-    "mochila": 180.00,
-    "monitor": 899.90,
-    "mouse": 99.90,
-    "teclado": 120.00
+    "notebook": {"valor": 3500.00, "quantidade": 3},
+    "smartphone": {"valor": 2400.00, "quantidade": 4},
+    "fones de ouvido": {"valor": 150.00, "quantidade": 12},
+    "mochila": {"valor": 180.00, "quantidade": 10},
+    "monitor": {"valor": 899.90, "quantidade": 5},
+    "mouse": {"valor": 99.90, "quantidade": 10},
+    "teclado": {"valor": 120.00, "quantidade": 8}
 }
 
 carrinho = {}
 
-def adicionar_produto(produto):
+def adicionar_produto(produto, quantidade):
     if produto in estoque:
-        valor = estoque[produto]
-        carrinho[produto] = valor
-        print(f"{produto.capitalize()} adicionado ao carrinho.")
+        if quantidade <= estoque[produto]["quantidade"]:
+            if produto in carrinho:
+                carrinho[produto]["quantidade"] += quantidade
+                carrinho[produto]["valor"] = carrinho[produto]["quantidade"] * estoque[produto]["valor"]
+            else:
+                carrinho[produto] = {"quantidade": quantidade, "valor": estoque[produto]["valor"] * quantidade}
+            
+            estoque[produto]["quantidade"] -= quantidade
+            print(f"{quantidade}x {produto.capitalize()} adicionado(s) ao carrinho.")
+        else:
+            print("Quantidade maior do que disponível no estoque.")
     else:
         print("Produto não encontrado.")
 
-def remover_produto(produto):
+def remover_produto(produto, quantidade):
     if produto in carrinho:
-        del carrinho[produto]
-        print(f"{produto.capitalize()} removido do carrinho.")
+            if quantidade <= carrinho[produto]["quantidade"]:
+                carrinho[produto]["quantidade"] -= quantidade
+                carrinho[produto]["valor"] = carrinho[produto]["quantidade"] * estoque[produto]["valor"]
+                
+                print(f"{quantidade}x {produto.capitalize()} removido(s) do carrinho.")
+                
+                if carrinho[produto]["quantidade"] == 0:
+                    del carrinho[produto]
+                estoque[produto]["quantidade"] += quantidade
+            else:
+                print("Inválido. Quantidade maior a quantidade adicionada ao carrinho.")
     else:
         print("Produto não encontrado.")
 
@@ -37,7 +54,7 @@ while True:
             raise ValueError
     except ValueError:
         print("Digite uma opção válida.")
-    else:    
+    else:
         match menu:
             case 0:
                 print("\nFinalizando...")
@@ -45,26 +62,47 @@ while True:
         
             case 1:
                 print("\nProdutos no estoque:")
-                for produto, valor in estoque.items():
-                    print(f"{produto.capitalize()}, R${valor}.")
+                for produto, informacao_produto in estoque.items():
+                    print(f"{produto.capitalize()}, valor: R${informacao_produto['valor']}, estoque: {informacao_produto['quantidade']}.")
             
             case 2:
                 print("\nAdicionar um produto ao carrinho:")
                 produto = input("Nome do produto: ").lower().strip()
-                adicionar_produto(produto)
+                while True:
+                    try:
+                        quantidade = int(input("Quantidade: "))
+                        if quantidade <= 0:
+                            raise ValueError
+                        
+                        adicionar_produto(produto, quantidade)
+                        break
+                    except ValueError:
+                        print("Digite uma quantidade válida.")
             
             case 3:
                 soma = 0
                 print("\nCarrinho:")
                 if carrinho:
-                    for produto, valor in carrinho.items():
-                        print(f"{produto.capitalize()}, R${valor}.")
-                        soma += valor
+                    for produto, informacao_produto in carrinho.items():
+                        print(f"{informacao_produto['quantidade']}x {produto.capitalize()}, R${informacao_produto['valor']}.")
+                        soma += informacao_produto["valor"]
                     print(f"Valor total: {soma:.2f}")
                 else:
                     print("Não há produtos no carrinho.")
             
             case 4:
                 print("\nRemover um produto do carrinho:")
-                produto = input("Nome do produto: ").lower().strip()
-                remover_produto(produto)
+                if carrinho:
+                    produto = input("Nome do produto: ").lower().strip()
+                    while True:
+                        try:
+                            quantidade = int(input("Quantidade: "))
+                            if quantidade <= 0:
+                                raise ValueError
+                            
+                            remover_produto(produto, quantidade)
+                            break
+                        except ValueError:
+                            print("Digite uma quantidade válida.")
+                else:
+                    print("Não há produtos no carrinho.")
