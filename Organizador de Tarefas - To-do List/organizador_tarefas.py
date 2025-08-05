@@ -4,7 +4,7 @@ tarefas = []
 tarefas_finalizadas = []
 
 def adicionar_tarefa():
-    print("\nAdidionar Tarefa:")
+    print("\nAdicionar Tarefa:")
     tarefa = input("Digite a tarefa para adicionar: ").strip().lower()
     tarefas.append(tarefa)
     print(f"Tarefa '{tarefa.capitalize()}' adicionada a lista.")
@@ -27,7 +27,7 @@ def concluir_tarefa():
                 raise ValueError
             else:
                 tarefa_concluida = tarefas.pop(numero-1)
-                print(f"Tarefa '{tarefa_concluida}' concluída com sucesso.")
+                print(f"Tarefa '{tarefa_concluida.capitalize()}' concluída com sucesso.")
                 tarefas_finalizadas.append(tarefa_concluida)
         except ValueError:
             print("Digite um número válido.")
