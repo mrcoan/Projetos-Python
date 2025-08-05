@@ -2,14 +2,32 @@
 
 contatos ={}
 
-def cadastrar_contato(nome, telefone):
-    contatos[nome] = telefone
-    print(f"{nome} cadastrado com sucesso.")
+def cadastrar_contato(nome, telefone, email):
+    if nome in contatos:
+        print("\nNome já cadastrado.")
+        while True:
+            try:
+                alterar = int(input("Deseja atualizar os dados já cadastrados (1= sim / 2= não)? "))
+                if alterar < 1 or alterar > 2:
+                    raise ValueError
+
+                if alterar == 1:
+                    contatos[nome] = {"telefone": telefone, "email": email}
+                    print(f"Contato {nome.title()} atualizado com sucesso.")
+                else:
+                    print(f"Dados não alterados no contato {nome.title()}")
+                break
+            except ValueError:
+                print("Digite uma opção válida.")
+    else:
+        contatos[nome] = {"telefone": telefone, "email": email}
+        print(f"{nome.title()} cadastrado(a) com sucesso.")
 
 def buscar_contato(nome):
     if nome in contatos:
+        informacao_contato = contatos[nome]  # Correção aqui
         print("\nContato encontrado:")
-        print(f"{nome.title()}, {telefone}.")
+        print(f"{nome.title()}, {informacao_contato['telefone']}, {informacao_contato['email']}.")
     else:
         print("Contato não encontrado.")
 
@@ -39,9 +57,10 @@ while True:
 
             case 1:
                 print("\nCadastro de novo contato:")
-                nome = input("Digite o nome: ").strip().lower()
-                telefone = input("Digite o telefone: ").strip()
-                cadastrar_contato(nome, telefone)
+                nome = input("Nome: ").strip().lower()
+                telefone = input("Telefone: ").strip()
+                email = input("E-mail: ").strip().lower()
+                cadastrar_contato(nome, telefone, email)
 
             case 2:
                 print("\nBuscar contato:")
@@ -60,9 +79,9 @@ while True:
                     print("Nao há contatos na agenda.")
 
             case 4:
-                print("\Contatos registrados:")
+                print("\nContato(s) registrado(s):")
                 if len(contatos):
-                    for contato, telefone in sorted(contatos.items()):
-                        print(f"{contato.title()}, {telefone}.")
+                    for contato, informacao_contato in sorted(contatos.items()):
+                        print(f"{contato.title()}, {informacao_contato['telefone']}, {informacao_contato['email']}.")
                 else:
                     print("Não há contatos na agenda.")
