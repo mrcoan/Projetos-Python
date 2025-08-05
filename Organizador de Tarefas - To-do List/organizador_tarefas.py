@@ -1,5 +1,8 @@
 # Organizador de Tarefas (To-do list) --------------------------------------------------------
 
+tarefas = []
+tarefas_finalizadas = []
+
 def adicionar_tarefa():
     print("\nAdidionar Tarefa:")
     tarefa = input("Digite a tarefa para adicionar: ").strip().lower()
@@ -11,6 +14,7 @@ def tarefas_pendentes():
         print("\nTarefas pendentes:")
         for indice, tarefa in enumerate(tarefas, start=1):
             print(f"Tarefa {indice}: {tarefa.capitalize()}")
+        print(f"{len(tarefas)} tarefa(s) pendente(s).")
     else:
         print("Não há tarefas pendentes.")
 
@@ -35,11 +39,10 @@ def tarefas_concluidas():
         print("\nTarefas concluídas: ")
         for indice, tarefa in enumerate(tarefas_finalizadas, start=1):
             print(f"Tarefa {indice}: {tarefa.capitalize()}.")
+        
+        print(f"{len(tarefas_finalizadas)} tarefa(s) concluída(s).")
     else:
         print("Não há tarefas finalizadas.")
-
-tarefas = []
-tarefas_finalizadas = []
 
 print("Organizador de Tarefas (To-do list)")
 
