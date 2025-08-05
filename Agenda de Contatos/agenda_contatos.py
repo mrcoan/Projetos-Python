@@ -83,5 +83,6 @@ while True:
                 if len(contatos):
                     for contato, informacao_contato in sorted(contatos.items()):
                         print(f"{contato.title()}, {informacao_contato['telefone']}, {informacao_contato['email']}.")
+                    print(f"{len(contatos)} contatos registrados.")
                 else:
                     print("Não há contatos na agenda.")
